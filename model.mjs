@@ -6,3 +6,5 @@ export function choose(state,value){if(!state.heard||state.answered||!Number.isF
 export function undoChoice(state){if(state.answered||!state.choices.length)return state;return {...state,choices:state.choices.slice(0,-1)};}
 export function score(stats,state,explore){if(!state.answered||explore)return {...stats};return {attempts:stats.attempts+1,correct:stats.correct+(state.correct?1:0)};}
 export function validateSettings(x){if(!x||![3,5,9].includes(x.count)||!Number.isInteger(x.length)||x.length<1||x.length>3||typeof x.explore!=='boolean')throw new Error('Invalid practice settings.');return {count:x.count,length:x.length,explore:x.explore};}
+
+export function sequenceFor(state,source="answer"){if(source!=="answer"&&source!=="choice")throw new Error("Unknown listening source.");if(source==="choice"&&!state.answered)throw new Error("Finish your answer before comparing it.");return [...(source==="choice"?state.choices:state.target)];}
